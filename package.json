@@ -1,0 +1,20 @@
+{
+  "name": "d3_learning",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "d3": "^6.3.1",
+    "lodash": "^4.17.20"
+  },
+  "devDependencies": {
+    "@types/d3": "^6.2.0",
+    "@types/lodash": "^4.14.167",
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^4.1.3"
+  }
+}
