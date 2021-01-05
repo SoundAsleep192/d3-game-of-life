@@ -3,6 +3,7 @@ import { FIELD_SIZE, CELL_SIZE_PX, CELL_GAP_PX } from './constants';
 import { Cell } from './interfaces';
 import { drawField } from './utils';
 
+// --- create field data model ---
 export const field: Cell[][] = [];
 
 for (let i = 0; i < FIELD_SIZE; i++) {
@@ -17,6 +18,7 @@ for (let i = 0; i < FIELD_SIZE; i++) {
     field.push(row);
 }
 
+// --- initialize rendering process ---
 const rows = select('body')
     .append('svg')
     .attr('width', () => FIELD_SIZE * (CELL_SIZE_PX + CELL_GAP_PX))
