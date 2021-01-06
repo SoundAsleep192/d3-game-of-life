@@ -44,14 +44,16 @@ drawField(container, field);
 let intervalRef;
 select('body')
     .append('button')
-    .text('Toggle run')
-    .on('click', () => {
+    .text('PLAY')
+    .on('click', function () {
         if (intervalRef) {
             clearInterval(intervalRef);
             intervalRef = null;
+            select(this).text('PLAY');
             return;
         }
 
+        select(this).text('STOP');
         intervalRef = setInterval(() => {
             field = execGameStep(field);
             drawField(container, field);
