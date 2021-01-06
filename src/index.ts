@@ -21,7 +21,7 @@ for (let i = 0; i < FIELD_SIZE; i++) {
 }
 
 // --- initialize rendering process ---
-const rows = select('body')
+const container = select('body')
     .append('svg')
     .attr('width', () => FIELD_SIZE * (CELL_SIZE_PX + CELL_GAP_PX))
     .attr('height', () => FIELD_SIZE * (CELL_SIZE_PX + CELL_GAP_PX))
@@ -35,18 +35,17 @@ const rows = select('body')
             draftField[+row][+col].alive = !field[+row][+col].alive;
         });
 
-        drawField(rows, field);
-    })
-    .selectAll('g');
+        drawField(container, field);
+    });
 
-drawField(rows, field);
+drawField(container, field);
 
+// -- create a button and interval for game loop
 let intervalRef;
 select('body')
     .append('button')
     .text('Toggle run')
     .on('click', () => {
-        console.log(intervalRef);
         if (intervalRef) {
             clearInterval(intervalRef);
             intervalRef = null;
@@ -55,8 +54,6 @@ select('body')
 
         intervalRef = setInterval(() => {
             field = execGameStep(field);
-            drawField(rows, field);
-        }, 500);
+            drawField(container, field);
+        }, 250);
     });
-
-

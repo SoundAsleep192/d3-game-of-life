@@ -1,11 +1,22 @@
-import { BaseType, Selection } from "d3";
+import { Selection } from "d3";
 import { produce } from 'immer';
 
 import { CELL_SIZE_PX, CELL_GAP_PX } from "./constants";
 import { Cell } from "./interfaces";
 
-export function drawField(rowsSelection: Selection<BaseType, unknown, SVGSVGElement, unknown>, data: Cell[][]): Selection<SVGRectElement, Cell, SVGGElement, Cell[]> {
-  return rowsSelection
+/** Draws svg field in the DOM */
+export function drawField(svgContainer: Selection<SVGSVGElement, unknown, HTMLElement, any>, data: Cell[][]): void {
+  // I've no idea why it only works this way, but here we go...
+  // if we don't call remove(), it duplicates all the <g> elements on every render
+  // if we leave just the first remove, it removes everything
+  // if we leave just the second remove, it duplicates all <g> elements once and then properly updates the second set of them
+  // wtf?
+  svgContainer
+    .selectAll('g')
+    .remove()
+    .data(data)
+    .exit()
+    .remove()
     .data(data)
     .enter()
     .append('g')
