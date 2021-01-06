@@ -1,10 +1,12 @@
 import { select } from 'd3';
+import { produce } from 'immer';
+
 import { FIELD_SIZE, CELL_SIZE_PX, CELL_GAP_PX } from './constants';
 import { Cell } from './interfaces';
-import { drawField } from './utils';
+import { drawField, execGameStep } from './utils';
 
 // --- create field data model ---
-export const field: Cell[][] = [];
+let field: Cell[][] = [];
 
 for (let i = 0; i < FIELD_SIZE; i++) {
     const row: Cell[] = [];
@@ -29,10 +31,32 @@ const rows = select('body')
 
         const { row, col } = cellRectElement.dataset;
 
-        field[+row][+col].alive = !field[+row][+col].alive;
+        field = produce(field, draftField => {
+            draftField[+row][+col].alive = !field[+row][+col].alive;
+        });
 
         drawField(rows, field);
     })
     .selectAll('g');
 
 drawField(rows, field);
+
+let intervalRef;
+select('body')
+    .append('button')
+    .text('Toggle run')
+    .on('click', () => {
+        console.log(intervalRef);
+        if (intervalRef) {
+            clearInterval(intervalRef);
+            intervalRef = null;
+            return;
+        }
+
+        intervalRef = setInterval(() => {
+            field = execGameStep(field);
+            drawField(rows, field);
+        }, 500);
+    });
+
+
